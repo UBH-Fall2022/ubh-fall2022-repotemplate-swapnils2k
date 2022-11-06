@@ -1,6 +1,7 @@
 import { Fragment, useState, useEffect } from "react";
 import Login from "./components/login/Login";
 import SignUp from "./components/login/SignUp";
+import DashboardRedirect from "./components/dashboard/DashboardRedirect";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 function App() {
@@ -28,18 +29,45 @@ function App() {
     <Fragment>
       <BrowserRouter>
         <Routes>
-          <Route path="/" element={<Login onLogin={onLoginHandler} />} />
+          <Route
+            path="/"
+            element={
+              isLoggedIn === true ? (
+                <DashboardRedirect onLogout={logoutHandler} />
+              ) : (
+                <Login onLogin={onLoginHandler} />
+              )
+            }
+          />
           <Route
             path="/verify/login"
-            element={<Login onLogin={onLoginHandler} />}
+            element={
+              isLoggedIn === true ? (
+                <DashboardRedirect onLogout={logoutHandler} />
+              ) : (
+                <Login onLogin={onLoginHandler} />
+              )
+            }
           />
           <Route
             path="/verify/signup"
-            element={<SignUp onSignUp={onLoginHandler} />}
+            element={
+              isLoggedIn === true ? (
+                <DashboardRedirect onLogout={logoutHandler} />
+              ) : (
+                <SignUp onSignUp={onLoginHandler} />
+              )
+            }
           />
           <Route
             path="/verify/dashboard"
-            element={<Login onLogin={onLoginHandler} />}
+            element={
+              isLoggedIn === true ? (
+                <DashboardRedirect onLogout={logoutHandler} />
+              ) : (
+                <Login onLogin={onLoginHandler} />
+              )
+            }
           />
         </Routes>
       </BrowserRouter>

@@ -9,12 +9,12 @@ import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import InputLabel from "@mui/material/InputLabel";
 import Input from "@mui/material/Input";
-// import Web3 from "web3";
-// import {
-//   metamaskAccount,
-//   registerCandidate,
-//   registerInstitute,
-// } from "../../web3client";
+import Web3 from "web3";
+import {
+  metamaskAccount,
+  registerCandidate,
+  registerInstitute,
+} from "../../web3client";
 
 import "./LoginForm.css";
 
@@ -62,34 +62,45 @@ export default function SignUpForm(props) {
       });
       return;
     }
-    // let userDetail;
-    // metamaskAccount()
-    //   .then((response) => {
-    //     console.log(response);
-    //     const account = response.toString();
-    //     userDetail = {
-    //       account: account,
-    //       name: name,
-    //       email: username,
-    //       password: password,
-    //       identity: userIdentity,
-    //     };
-        // console.log(userDetail);
-        //   if (identity === "candidate") {
-
-        //   }
-        //   if (identity === "institute") {
-
-        //   } if (identity === "organization")
-        // })
-        // props.onSignUp(username, password, userIdentity);
-        // navigate(`/verify/dashboard`);
-      // })
-      // .catch((err) => {
-      //   console.log(err);
-      // });
-    // props.onSignUp(username, password, userIdentity);
-    // navigate(`/verify/dashboard`);
+    let userDetail;
+    metamaskAccount()
+      .then((response) => {
+        console.log(response);
+        const account = response.toString();
+        userDetail = {
+          account: account.trim(),
+          name: name.trim(),
+          email: username.trim(),
+          password: password.trim(),
+          identity: userIdentity.trim(),
+        };
+        userDetail = JSON.stringify(userDetail);
+        console.log(userDetail);
+        if (userIdentity === "candidate") {
+          registerCandidate(userDetail)
+            .then((response) => {
+              props.onSignUp(username, password, userIdentity);
+              navigate(`/verify/dashboard`);
+            })
+            .catch((err) => {
+              console.log(err);
+            });
+        } else {
+          registerInstitute(userDetail)
+            .then((response) => {
+              props.onSignUp(username, password, userIdentity);
+              navigate(`/verify/dashboard`);
+            })
+            .catch((err) => {
+              console.log(err);
+            });
+        }
+      })
+      // props.onSignUp(username, password, userIdentity);
+      // navigate(`/verify/dashboard`);
+      .catch((err) => {
+        console.log(err);
+      });
   };
   return (
     <Fragment>
@@ -131,6 +142,7 @@ export default function SignUpForm(props) {
             aria-describedby="my-helper-text"
             sx={{ margin: "12px", height: "40%", width: "100%" }}
             required
+            type="password"
             onChange={onPasswordChangeHandler}
           />
         </FormControl>
@@ -141,6 +153,7 @@ export default function SignUpForm(props) {
             aria-describedby="my-helper-text"
             sx={{ margin: "12px", height: "40%", width: "100%" }}
             required
+            type="password"
             onChange={onConfirmPasswordChangeHandler}
           />
         </FormControl>

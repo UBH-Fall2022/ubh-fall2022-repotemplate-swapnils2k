@@ -1,0 +1,31 @@
+.org {
+  background-color: rgb(243, 241, 240);
+  padding: 10px;
+  margin: 10px;
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.org span {
+  /* display: flex; */
+  width: 100%;
+}
+
+.button-right {
+  display: flex;
+  justify-content: flex-end;
+  width: 100%;
+  align-items: center;
+  min-height: 40px;
+}
+
+.request-header {
+  padding: 12px;
+}
+
+.request-header span {
+  font-size: 20px;
+}

@@ -9,6 +9,8 @@ import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import InputLabel from "@mui/material/InputLabel";
 import Input from "@mui/material/Input";
+import Web3 from "web3";
+import { candidateDetails, instituteDetails } from "../../web3client";
 
 import "./LoginForm.css";
 
@@ -26,7 +28,7 @@ export default function LoginForm(props) {
     setPassword(event.target.value);
   };
   const onSubmitHandler = () => {
-    props.onLogin(username, password, userIdentity);
+    console.log(username, password, userIdentity);
     if (username.trim().length === 0) {
       setError({
         title: "Username field Empty",
@@ -35,7 +37,57 @@ export default function LoginForm(props) {
       });
       return;
     }
-    navigate(`/verify/dashboard`);
+    console.log(userIdentity);
+    if (userIdentity === "candidate") {
+      candidateDetails()
+        .then((r) => {
+          const response = JSON.parse(r);
+          console.log(response);
+          if (
+            response.email.trim() === username.trim() &&
+            response.password.trim() === password.trim() &&
+            response.identity.trim() === userIdentity.trim()
+          ) {
+            console.log("User Verified");
+            props.onLogin(username, password, userIdentity);
+            navigate(`/verify/dashboard`);
+          } else {
+            setError({
+              title: "Username/Password not found",
+              message:
+                "Please make sure that the username and password are correct.",
+            });
+          }
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    } else {
+      instituteDetails()
+        .then((r) => {
+          const response = JSON.parse(r);
+          console.log(response);
+          console.log(username, password, userIdentity);
+          if (
+            response.email.trim() === username.trim() &&
+            response.password.trim() === password.trim() &&
+            response.identity.trim() === userIdentity.trim()
+          ) {
+            console.log("User Verified");
+            props.onLogin(username, password, userIdentity);
+            navigate(`/verify/dashboard`);
+          } else {
+            setError({
+              title: "Username/Password not found",
+              message:
+                "Please make sure that the username and password are correct.",
+            });
+          }
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    }
   };
   const resetErrorHandler = () => {
     setError(null);
@@ -73,6 +125,7 @@ export default function LoginForm(props) {
             aria-describedby="my-helper-text"
             sx={{ height: "40%", width: "100%", margin: "12px" }}
             required
+            type="password"
             onChange={onPasswordChangeHandler}
           />
         </FormControl>
@@ -88,7 +141,7 @@ export default function LoginForm(props) {
           >
             <MenuItem value="candidate">Candidate</MenuItem>
             <MenuItem value="institute">Institute</MenuItem>
-            <MenuItem value="organization">Organization</MenuItem>
+            <MenuItem value="organization">Company</MenuItem>
           </Select>
         </FormControl>
         <FormControl fullWidth>

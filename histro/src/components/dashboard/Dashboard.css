@@ -1,0 +1,15 @@
+.dashboard-split {
+  display: flex;
+  flex-direction: row;
+  background-color: #f7f6fc;
+}
+
+.dashboard-details {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  padding: 10px;
+  margin: 15px;
+  background-color: white;
+  border-radius: 12px;
+}

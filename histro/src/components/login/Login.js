@@ -9,7 +9,7 @@ export default function Login(props) {
       <div className="login-split occupy-screen">
         <div className="login-flex-1" />
         <div className="login-flex-2">
-          <LoginForm onLogin={props.onLogin}/>
+          <LoginForm onLogin={props.onLogin} />
         </div>
       </div>
     </Fragment>
